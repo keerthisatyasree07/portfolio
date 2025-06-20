@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanka Keerthi - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: linear-gradient(135deg, #2dd4bf 0%, #059669 100%);
+            padding: 2rem 1.5rem;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+        }
+
+        .nav-item {
+            color: white;
+            padding: 1rem 0;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+
+        .nav-item:hover {
+            padding-left: 1rem;
+            color: #f0f9ff;
+        }
+
+        .nav-item.active {
+            color: #f0f9ff;
+            font-weight: 600;
+        }
+
+        .nav-item.active::before {
+            content: '→';
+            position: absolute;
+            left: -1rem;
+            transition: all 0.3s ease;
+        }
+
+        .main-content {
+            margin-left: 300px;
+            flex: 1;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .content-section {
+            display: none;
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .profile-section {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #059669;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 5px solid white;
+        }
+
+        .profile-name {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #059669;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #059669, #2dd4bf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .profile-title {
+            font-size: 1.5rem;
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .profile-description {
+            font-size: 1.1rem;
+            color: #4b5563;
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2dd4bf, #059669);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(45, 212, 191, 0.4);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #059669;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .skill-category {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid #2dd4bf;
+        }
+
+        .skill-category h3 {
+            color: #059669;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .skill-list {
+            list-style: none;
+        }
+
+        .skill-list li {
+            padding: 0.5rem 0;
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .project-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #059669;
+            margin-bottom: 1rem;
+        }
+
+        .project-description {
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        .education-timeline {
+            position: relative;
+            margin-top: 2rem;
+        }
+
+        .education-item {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 5px solid #2dd4bf;
+            position: relative;
+        }
+
+        .education-period {
+            color: #059669;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .education-degree {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0.5rem 0;
+        }
+
+        .education-institution {
+            color: #6b7280;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .education-grade {
+            background: linear-gradient(135deg, #2dd4bf, #059669);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2dd4bf, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 1rem;
+        }
+
+        .certification-item {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .certification-title {
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+
+        .certification-org {
+            color: #a16207;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1rem;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+            
+            .profile-name {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .projects-grid,
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <nav>
+            <div class="nav-item active" data-section="home">home</div>
+            <div class="nav-item" data-section="about">about me</div>
+            <div class="nav-item" data-section="education">education</div>
+            <div class="nav-item" data-section="projects">projects</div>
+            <div class="nav-item" data-section="skills">skills</div>
+            <div class="nav-item" data-section="certifications">certifications</div>
+            <div class="nav-item" data-section="contact">contact</div>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <!-- Home Section -->
+        <div class="content-section active" id="home">
+            <div class="profile-section">
+                <!-- REPLACE THIS DIV WITH YOUR ACTUAL IMAGE -->
+                <div class="profile-image">
+                    <img src="C:/Users/kirthi/Desktop/internship/photo.jpg" alt="Vanka Keerthi" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                </div>
+                <h1 class="profile-name">Vanka Keerthi Satya Sree</h1>
+                <p class="profile-title">Information Technology Student</p>
+                <p class="profile-description">
+                    Aspiring IT professional seeking challenging opportunities to utilize my technical skills and grow while contributing to organizational goals. Currently pursuing B.Tech in Information Technology with a strong foundation in programming, web technologies, and database management.
+                </p>
+               
+            </div>
+        </div>
+
+        <!-- About Me Section -->
+        <div class="content-section" id="about">
+            <h2 class="section-title">About Me</h2>
+            <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 2rem; border-radius: 15px; margin-top: 2rem;">
+                <p style="font-size: 1.2rem; line-height: 1.8; color: #374151; margin-bottom: 2rem;">
+                    I am a dedicated Information Technology student at Puducherry Technological University with a passion for technology and innovation. My journey in the tech world is driven by curiosity and a desire to create solutions that make a difference.
+                </p>
+                <p style="font-size: 1.1rem; line-height: 1.8; color: #4b5563; margin-bottom: 2rem;">
+                    To obtain a challenging position that fully utilizes my skills and provides me with suitable opportunities which would help me as a fresher to grow while working towards the organizational goals.
+                </p>
+                
+                <h3 style="color: #059669; font-size: 1.5rem; margin-bottom: 1rem;">Soft Skills</h3>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h4 style="color: #059669;">Communication Skills</h4>
+                        <p style="color: #6b7280;">Effective verbal and written communication abilities</p>
+                    </div>
+                    <div class="skill-category">
+                        <h4 style="color: #059669;">Time Management</h4>
+                        <p style="color: #6b7280;">Efficient project planning and deadline management</p>
+                    </div>
+                    <div class="skill-category">
+                        <h4 style="color: #059669;">Critical Thinking</h4>
+                        <p style="color: #6b7280;">Analytical problem-solving approach</p>
+                    </div>
+                    <div class="skill-category">
+                        <h4 style="color: #059669;">Adaptability</h4>
+                        <p style="color: #6b7280;">Quick learning and adaptation to new technologies</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Education Section -->
+        <div class="content-section" id="education">
+            <h2 class="section-title">Education</h2>
+            <div class="education-timeline">
+                <div class="education-item">
+                    <div class="education-period">2022 - 2026</div>
+                    <div class="education-degree">Bachelor of Technology</div>
+                    <div class="education-institution">Puducherry Technological University</div>
+                    <div class="education-grade">CGPA: 8.6</div>
+                </div>
+                
+                <div class="education-item">
+                    <div class="education-period">2020 - 2022</div>
+                    <div class="education-degree">Board of Intermediate Education – MPC</div>
+                    <div class="education-institution">Sri Sai Junior College, Yanam</div>
+                    <div class="education-grade">CGPA: 9.6</div>
+                </div>
+                
+                <div class="education-item">
+                    <div class="education-period">2019 - 2020</div>
+                    <div class="education-degree">Central Board Of Secondary Education</div>
+                    <div class="education-institution">Jawahar Navodaya Vidyalaya, Mettakur, Yanam</div>
+                    <div class="education-grade">CGPA: 7.2</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Projects Section -->
+        <div class="content-section" id="projects">
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-title">Burglar Security Alarm</div>
+                    <div class="project-description">
+                        The main objective of this project is to detect intrusions entry into a building or other areas. The speaker beeps and the flasher flashes. These actions alert the owner of the residence and personnel of the presence of an intruder. This system provides an effective security solution for homes and buildings.
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-title">Cost Efficient Customised Wedding Planner</div>
+                    <div class="project-description">
+                        Developed a comprehensive wedding planning solution focused on affordability and personalization. The project enabled users to plan weddings based on budget constraints, vendor availability, and personal preferences. This system helps couples organize their special day while staying within their budget.
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-title">Air Quality Monitoring System with Alerts</div>
+                    <div class="project-description">
+                        This project monitors air quality levels (good, moderate, or poor) in real-time, sends alert messages when pollution levels are high, and activates a buzzer when the air quality becomes poor. The system helps users stay informed about environmental conditions and take necessary precautions.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="content-section" id="skills">
+            <h2 class="section-title">Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3>Programming Languages</h3>
+                    <ul class="skill-list">
+                        <li>C Programming</li>
+                        <li>Python</li>
+                        <li>Java</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h3>Database</h3>
+                    <ul class="skill-list">
+                        <li>MySQL</li>
+                        <li>Database Design</li>
+                        <li>Query Optimization</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h3>Web Technologies</h3>
+                    <ul class="skill-list">
+                        <li>HTML5</li>
+                        <li>CSS3</li>
+                        <li>Responsive Design</li>
+                    </ul>
+                </div>
+                
+                <div class="skill-category">
+                    <h3>Tools & Technologies</h3>
+                    <ul class="skill-list">
+                        <li>Data Visualization</li>
+                        <li>Tableau</li>
+                        <li>AI Tools</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certifications Section -->
+        <div class="content-section" id="certifications">
+            <h2 class="section-title">Certifications & Awards</h2>
+            <div style="margin-top: 2rem;">
+                <div class="certification-item">
+                    <div class="certification-title">Data Visualization and Tableau Certification</div>
+                    <div class="certification-org">Jobaaj Learnings</div>
+                </div>
+                
+                <div class="certification-item">
+                    <div class="certification-title">Java Programming Virtual Internship</div>
+                    <div class="certification-org">CodSoft - 4 weeks completed successfully</div>
+                </div>
+                
+                <div class="certification-item">
+                    <div class="certification-title">Wildlife Ecology Course - Gold Medal</div>
+                    <div class="certification-org">NPTEL - 100% completion with Gold Medal</div>
+                </div>
+                
+                <div class="certification-item">
+                    <div class="certification-title">AI Tool Workshop Certification</div>
+                    <div class="certification-org">Be10X</div>
+                </div>
+                
+                <div class="certification-item">
+                    <div class="certification-title">Mini Project Expo Participation Certificate</div>
+                    <div class="certification-org">Electronics Club, Puducherry Technological University</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="content-section" id="contact">
+            <h2 class="section-title">Contact Information</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div>
+                        <strong>Address:</strong><br>
+                        Ysr nagar, 4th Street, D.no: 6-4-120<br>
+                        Yanam - 533464
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">📧</div>
+                    <div>
+                        <strong>Email:</strong><br>
+                        <a href="mailto:keerthivanka7@gmail.com" style="color: #059669; text-decoration: none;">keerthivanka7@gmail.com</a>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div>
+                        <strong>Phone:</strong><br>
+                        <a href="tel:+919398868031" style="color: #059669; text-decoration: none;">+91 93988 68031</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation functionality
+        const navItems = document.querySelectorAll('.nav-item');
+        const contentSections = document.querySelectorAll('.content-section');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const targetSection = item.getAttribute('data-section');
+                
+                // Remove active class from all nav items and content sections
+                navItems.forEach(nav => nav.classList.remove('active'));
+                contentSections.forEach(section => section.classList.remove('active'));
+                
+                // Add active class to clicked nav item and corresponding content section
+                item.classList.add('active');
+                document.getElementById(targetSection).classList.add('active');
+            });
+        });
+
+        // Smooth scrolling for mobile
+        if (window.innerWidth <= 768) {
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    document.querySelector('.main-content').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        }
+    </script>
+</body>
+</html>
